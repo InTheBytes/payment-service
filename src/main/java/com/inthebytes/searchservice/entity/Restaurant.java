@@ -39,7 +39,7 @@ public class Restaurant implements Serializable {
 	@Column(name = "cuisine")
 	private String cuisine;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Food> foods;
 	
 	@Transient
@@ -183,6 +183,8 @@ public class Restaurant implements Serializable {
 	
 	@PostLoad
 	public void representativePrice() {
+		if (foods.size() == 0)
+			this.price = 0.0;
 		Double mode = modePrice();
 		Integer frequency = 0;
 		for (Food food : foods) 

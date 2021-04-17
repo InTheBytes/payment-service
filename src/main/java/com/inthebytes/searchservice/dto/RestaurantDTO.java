@@ -36,7 +36,7 @@ public class RestaurantDTO {
 	private LocationDTO location;
 
 	@Nullable
-	@JsonIgnore
+//	@JsonIgnore
 	private List<FoodDTO> foods;
 
 	public Long getRestaurantId() {
@@ -138,6 +138,8 @@ public class RestaurantDTO {
 	}
 	
 	public Double getPrice() {
+		if (foods.size() == 0)
+			return 0.0;
 		Double mode = modePrice();
 		Integer frequency = 0;
 		for (FoodDTO food : foods) 

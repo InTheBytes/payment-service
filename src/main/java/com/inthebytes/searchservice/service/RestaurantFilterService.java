@@ -72,19 +72,27 @@ public class RestaurantFilterService {
 	
 	private List<RestaurantDTO> filterResults(List<RestaurantDTO> results, 
 			Function<? super RestaurantDTO, ? extends RestaurantDTO> mapOp) {
-		return results.stream()
+		List<RestaurantDTO> result = results.stream()
 				.map(mapOp)
 				.filter(Objects::nonNull)
 				.collect(Collectors.toList());
+		if (result.size() > 0)
+			return result;
+		else
+			return null;
 	}
 	
 	private List<RestaurantDTO> filter(Function<? super RestaurantDTO, ? extends RestaurantDTO> mapOp) {
-		return repo.findAll()
+		List<RestaurantDTO> results =  repo.findAll()
 				.stream()
 				.map((x) -> mapper.convert(x))
 				.map(mapOp)
 				.filter(Objects::nonNull)
 				.collect(Collectors.toList());
+		if (results.size() > 0)
+			return results;
+		else
+			return null;
 	}
 
 }
