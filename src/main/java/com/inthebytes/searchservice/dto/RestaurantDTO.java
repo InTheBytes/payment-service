@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class RestaurantDTO {
 	
 	public RestaurantDTO(String name, String cuisine, LocationDTO location) {
@@ -18,6 +20,7 @@ public class RestaurantDTO {
 
 	@Id
 	@Nullable
+	@JsonIgnore
 	private Long restaurantId;
 
 	@NonNull
@@ -30,6 +33,7 @@ public class RestaurantDTO {
 	private LocationDTO location;
 
 	@Nullable
+	@JsonIgnore
 	private List<FoodDTO> foods;
 
 	public Long getRestaurantId() {
