@@ -32,7 +32,7 @@ public class Food implements Serializable {
 	@Column(name = "description")
 	private String description;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")
 	private Restaurant restaurant;
 
@@ -80,12 +80,12 @@ public class Food implements Serializable {
 		return serialVersionUID;
 	}
 
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((foodId == null) ? 0 : foodId.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((price == null) ? 0 : price.hashCode());
 		result = prime * result + ((restaurant == null) ? 0 : restaurant.hashCode());
@@ -105,11 +105,6 @@ public class Food implements Serializable {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
-			return false;
-		if (foodId == null) {
-			if (other.foodId != null)
-				return false;
-		} else if (!foodId.equals(other.foodId))
 			return false;
 		if (name == null) {
 			if (other.name != null)

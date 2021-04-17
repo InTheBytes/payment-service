@@ -39,7 +39,7 @@ public class Restaurant implements Serializable {
 	@Column(name = "cuisine")
 	private String cuisine;
 
-	@OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Food> foods;
 	
 	@Transient
@@ -89,10 +89,6 @@ public class Restaurant implements Serializable {
 		return price;
 	}
 
-	public void setPrice(Double price) {
-		this.price = price;
-	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -105,6 +101,7 @@ public class Restaurant implements Serializable {
 		result = prime * result + ((foods == null) ? 0 : foods.hashCode());
 		result = prime * result + ((location == null) ? 0 : location.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((price == null) ? 0 : price.hashCode());
 		result = prime * result + ((restaurantId == null) ? 0 : restaurantId.hashCode());
 		return result;
 	}
@@ -138,6 +135,11 @@ public class Restaurant implements Serializable {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
+		if (price == null) {
+			if (other.price != null)
+				return false;
+		} else if (!price.equals(other.price))
+			return false;
 		if (restaurantId == null) {
 			if (other.restaurantId != null)
 				return false;
@@ -148,8 +150,8 @@ public class Restaurant implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Restaurant [location=" + location + ", name=" + name + ", cuisine=" + cuisine + ", foods=" + foods
-				+ "]";
+		return "Restaurant [restaurantId=" + restaurantId + ", location=" + location + ", name=" + name + ", cuisine="
+				+ cuisine + ", foods=" + foods + ", price=" + price + "]";
 	}
 	
 	private Double meanPrice() {
@@ -163,7 +165,6 @@ public class Restaurant implements Serializable {
 		List<Double> prices = foods.stream()
 				.mapToDouble(x -> x.getPrice())
 				.boxed().collect(Collectors.toList());
-		
 		Double modeValue = null;
 		Integer maxCount = 0;
 		for (Double price : prices) {
@@ -172,8 +173,10 @@ public class Restaurant implements Serializable {
 				if (check.equals(price))
 					++count;
 			}
-			if (count > maxCount)
+			if (count > maxCount) {
+				maxCount = count;
 				modeValue = price;
+			}
 		}
 		return modeValue;
 	}
@@ -181,13 +184,18 @@ public class Restaurant implements Serializable {
 	@PostLoad
 	private void representativePrice() {
 		Double mode = modePrice();
-		Integer frequency = (int) foods.stream()
-				.mapToDouble(x -> x.getPrice())
-				.reduce(0.0, (x, y) -> (mode.equals(y)) ? x + 1.0 : x);
+		Integer frequency = 0;
+		for (Food food : foods) 
+			if (food.getPrice().equals(mode))
+				++frequency;
 		
 		if (frequency >= foods.size()/4)
 			this.price = mode;
 		else
 			this.price = meanPrice();
+	}
+	
+	public void manuallyLoadPrice() {
+		representativePrice();
 	}
 }

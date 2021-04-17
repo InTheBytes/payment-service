@@ -8,6 +8,13 @@ public class FilterCriteria {
 	
 	private Object value;
 
+	public FilterCriteria(String key, String operation, Object value) {
+		super();
+		this.key = key;
+		this.operation = operation;
+		this.value = value;
+	}
+
 	public String getKey() {
 		return key;
 	}

@@ -92,7 +92,6 @@ public class Location implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((city == null) ? 0 : city.hashCode());
-		result = prime * result + ((locationId == null) ? 0 : locationId.hashCode());
 		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		result = prime * result + ((street == null) ? 0 : street.hashCode());
 		result = prime * result + ((unit == null) ? 0 : unit.hashCode());
@@ -113,11 +112,6 @@ public class Location implements Serializable {
 			if (other.city != null)
 				return false;
 		} else if (!city.equals(other.city))
-			return false;
-		if (locationId == null) {
-			if (other.locationId != null)
-				return false;
-		} else if (!locationId.equals(other.locationId))
 			return false;
 		if (state == null) {
 			if (other.state != null)

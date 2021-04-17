@@ -11,8 +11,13 @@ import com.inthebytes.searchservice.entity.Restaurant;
 public class RestaurantSpecification implements Specification<Restaurant>{
 
 	private static final long serialVersionUID = -7254492317884489581L;
-	
+
 	private FilterCriteria criteria;
+
+	public RestaurantSpecification(FilterCriteria criteria) {
+		super();
+		this.criteria = criteria;
+	}
 
 	@Override
 	public Predicate toPredicate(Root<Restaurant> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
@@ -30,10 +35,18 @@ public class RestaurantSpecification implements Specification<Restaurant>{
 					);
 		}
 		else if (criteria.getOperation().equalsIgnoreCase(":")) {
-			return criteriaBuilder.equal(
-					root.get(criteria.getKey()),
-					criteria.getValue()
-					);
+			if (root.get(criteria.getKey()).getJavaType() == String.class) {
+				return criteriaBuilder.like(
+						root.<String> get(criteria.getKey()),
+						"%" + criteria.getValue() + "%"
+						);
+			}
+			else {
+				return criteriaBuilder.equal(
+						root.get(criteria.getKey()),
+						criteria.getValue()
+						);
+			}
 		}
 		return null;
 	}
