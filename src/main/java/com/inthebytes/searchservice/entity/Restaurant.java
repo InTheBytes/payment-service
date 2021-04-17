@@ -2,6 +2,7 @@ package com.inthebytes.searchservice.entity;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -136,5 +137,43 @@ public class Restaurant implements Serializable {
 	public String toString() {
 		return "Restaurant [location=" + location + ", name=" + name + ", cuisine=" + cuisine + ", foods=" + foods
 				+ "]";
+	}
+	
+	private Double meanPrice() {
+		Double sum = foods.stream()
+				.mapToDouble(x -> x.getPrice())
+				.sum();
+		return sum/foods.size();
+	}
+	
+	private Double modePrice() {
+		List<Double> prices = foods.stream()
+				.mapToDouble(x -> x.getPrice())
+				.boxed().collect(Collectors.toList());
+		
+		Double modeValue = null;
+		Integer maxCount = 0;
+		for (Double price : prices) {
+			Integer count = 0;
+			for (Double check : prices) {
+				if (check.equals(price))
+					++count;
+			}
+			if (count > maxCount)
+				modeValue = price;
+		}
+		return modeValue;
+	}
+	
+	public Double representativePrice() {
+		Double mode = modePrice();
+		Integer frequency = (int) foods.stream()
+				.mapToDouble(x -> x.getPrice())
+				.reduce(0.0, (x, y) -> (mode.equals(y)) ? x + 1.0 : x);
+		
+		if (frequency >= foods.size()/4)
+			return mode;
+		else
+			return meanPrice();
 	}
 }
