@@ -14,7 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "restaurant")
@@ -39,6 +41,9 @@ public class Restaurant implements Serializable {
 
 	@OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Food> foods;
+	
+	@Transient
+	private Double price;
 
 	public Long getRestaurantId() {
 		return restaurantId;
@@ -78,6 +83,14 @@ public class Restaurant implements Serializable {
 
 	public void setFoods(List<Food> foods) {
 		this.foods = foods;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 
 	public static long getSerialversionuid() {
@@ -165,15 +178,16 @@ public class Restaurant implements Serializable {
 		return modeValue;
 	}
 	
-	public Double representativePrice() {
+	@PostLoad
+	private void representativePrice() {
 		Double mode = modePrice();
 		Integer frequency = (int) foods.stream()
 				.mapToDouble(x -> x.getPrice())
 				.reduce(0.0, (x, y) -> (mode.equals(y)) ? x + 1.0 : x);
 		
 		if (frequency >= foods.size()/4)
-			return mode;
+			this.price = mode;
 		else
-			return meanPrice();
+			this.price = meanPrice();
 	}
 }
