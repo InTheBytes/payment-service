@@ -1,13 +1,16 @@
 package com.inthebytes.searchservice.dto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Id;
+import javax.persistence.PostLoad;
 
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.inthebytes.searchservice.entity.Food;
 
 public class RestaurantDTO {
 	
@@ -104,6 +107,46 @@ public class RestaurantDTO {
 	@Override
 	public String toString() {
 		return "RestaurantDTO [name=" + name + ", cuisine=" + cuisine + ", location=" + location + ", foods=" + foods
-				+ "]";
+				+ ", price=" + getPrice() + "]";
+	}
+	
+	private Double meanPrice() {
+		Double sum = foods.stream()
+				.mapToDouble(x -> x.getPrice())
+				.sum();
+		return sum/foods.size();
+	}
+	
+	private Double modePrice() {
+		List<Double> prices = foods.stream()
+				.mapToDouble(x -> x.getPrice())
+				.boxed().collect(Collectors.toList());
+		Double modeValue = null;
+		Integer maxCount = 0;
+		for (Double price : prices) {
+			Integer count = 0;
+			for (Double check : prices) {
+				if (check.equals(price))
+					++count;
+			}
+			if (count > maxCount) {
+				maxCount = count;
+				modeValue = price;
+			}
+		}
+		return modeValue;
+	}
+	
+	public Double getPrice() {
+		Double mode = modePrice();
+		Integer frequency = 0;
+		for (FoodDTO food : foods) 
+			if (food.getPrice().equals(mode))
+				++frequency;
+		
+		if (frequency >= foods.size()/4)
+			return mode;
+		else
+			return meanPrice();
 	}
 }

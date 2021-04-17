@@ -182,7 +182,7 @@ public class Restaurant implements Serializable {
 	}
 	
 	@PostLoad
-	private void representativePrice() {
+	public void representativePrice() {
 		Double mode = modePrice();
 		Integer frequency = 0;
 		for (Food food : foods) 
@@ -193,9 +193,5 @@ public class Restaurant implements Serializable {
 			this.price = mode;
 		else
 			this.price = meanPrice();
-	}
-	
-	public void manuallyLoadPrice() {
-		representativePrice();
 	}
 }

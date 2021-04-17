@@ -33,6 +33,7 @@ public class RestaurantMapper {
 			foods.add(f);
 		}
 		entity.setFoods(foods);
+		entity.representativePrice();
 		
 		return entity;
 	}
