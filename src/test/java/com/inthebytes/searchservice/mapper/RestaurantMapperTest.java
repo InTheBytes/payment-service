@@ -35,14 +35,6 @@ public class RestaurantMapperTest {
 	}
 	
 	@Test
-	public void restaurantDtoToEntityTest() {
-		RestaurantDTO tester = makeRestaurantDTO();
-		Restaurant result = makeRestaurantEntity();
-		
-		assertEquals(mapper.convert(tester).toString(), result.toString());
-	}
-	
-	@Test
 	public void locationEntityToDtoTest() {
 		Location tester = makeRestaurantEntity().getLocation();
 		LocationDTO result = makeRestaurantDTO().getLocation();
@@ -51,27 +43,9 @@ public class RestaurantMapperTest {
 	}
 	
 	@Test
-	public void locationDtoToEntityTest() {
-		LocationDTO tester = makeRestaurantDTO().getLocation();
-		Location result = makeRestaurantEntity().getLocation();
-		
-		assertEquals(mapper.convert(tester).toString(), result.toString());
-	}
-	
-	@Test
 	public void foodEntityToDtoTest() {
 		List<Food> testers = makeRestaurantEntity().getFoods();
 		List<FoodDTO> results = makeRestaurantDTO().getFoods();
-		
-		for (int i = 0; i < testers.size(); i++) {
-			assertEquals(mapper.convert(testers.get(i)).toString(), results.get(i).toString());
-		}
-	}
-	
-	@Test
-	public void foodDtoToEntityTest() {
-		List<FoodDTO> testers = makeRestaurantDTO().getFoods();
-		List<Food> results = makeRestaurantEntity().getFoods();
 		
 		for (int i = 0; i < testers.size(); i++) {
 			assertEquals(mapper.convert(testers.get(i)).toString(), results.get(i).toString());
