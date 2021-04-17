@@ -29,6 +29,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.event.annotation.BeforeTestExecution;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 
 import com.inthebytes.searchservice.dto.FoodDTO;
@@ -39,11 +40,9 @@ import com.inthebytes.searchservice.entity.Location;
 import com.inthebytes.searchservice.entity.Restaurant;
 import com.inthebytes.searchservice.mapper.RestaurantMapper;
 import com.inthebytes.searchservice.repository.RestaurantRepository;
-//
-@RunWith(SpringJUnit4ClassRunner.class)
+
+@RunWith(SpringRunner.class)
 @TestInstance(Lifecycle.PER_CLASS)
-//@DataJpaTest
-@EnableJpaRepositories(basePackages = "com.inthebytes.searchservice.repository")
 public class RestaurantFilterServiceTest {
 
 
@@ -77,9 +76,11 @@ public class RestaurantFilterServiceTest {
 		when(mapper.convert(cheapDiner)).thenReturn(cheapDinerDTO);
 		when(mapper.convert(expensiveDiner)).thenReturn(expensiveDinerDTO);
 
-		repo.save(cheapFast);
-		repo.save(cheapDiner);
-		repo.save(expensiveDiner);
+		List<Restaurant> results = new ArrayList<Restaurant>();
+		results.add(cheapDiner);
+		results.add(cheapFast);
+		results.add(expensiveDiner);
+		when(repo.findAll()).thenReturn(results);
 	}
 	
 	@Test
@@ -229,6 +230,8 @@ public class RestaurantFilterServiceTest {
 	private RestaurantDTO expensiveDTO() {
 		RestaurantDTO expensiveDiner = new RestaurantDTO("Someone else's Diner", "Diner", makeLocationDTO());
 		expensiveDiner.setRestaurantId(3L);
+		expensiveDiner.getLocation().setCity("San Francisco");
+		expensiveDiner.getLocation().setZipCode(22222);
 		List<FoodDTO> expensiveDinerFood = new ArrayList<FoodDTO>();
 		expensiveDinerFood.add(makeFoodDTO("Royal Slam", 18.20));
 		expensiveDinerFood.add(makeFoodDTO("Creme Brule", 21.05));
