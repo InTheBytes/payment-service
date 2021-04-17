@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Persistence;
 import javax.transaction.Transactional;
@@ -92,8 +93,32 @@ public class RestaurantFilterServiceTest {
 	}
 	
 	@Test
+	public void filterResultsByCuisineTest() {
+		List<RestaurantDTO> results = repo.findAll()
+				.stream()
+				.map((x) -> mapper.convert(x))
+				.collect(Collectors.toList());
+		List<RestaurantDTO> diners = service.filterByCuisine(results, "Diner");
+		assertThat(cheapDinerDTO).isIn(diners);
+		assertThat(expensiveDinerDTO).isIn(diners);
+		assertThat(cheapFastDTO).isNotIn(diners);
+	}
+	
+	@Test
 	public void filterByCityTest() {
 		List<RestaurantDTO> sac = service.filterByCity("Sacramento");
+		assertThat(cheapFastDTO).isIn(sac);
+		assertThat(cheapDinerDTO).isIn(sac);
+		assertThat(expensiveDinerDTO).isNotIn(sac);
+	}
+	
+	@Test
+	public void filterResultsByCityTest() {
+		List<RestaurantDTO> results = repo.findAll()
+				.stream()
+				.map((x) -> mapper.convert(x))
+				.collect(Collectors.toList());
+		List<RestaurantDTO> sac = service.filterByCity(results, "Sacramento");
 		assertThat(cheapFastDTO).isIn(sac);
 		assertThat(cheapDinerDTO).isIn(sac);
 		assertThat(expensiveDinerDTO).isNotIn(sac);
@@ -108,8 +133,32 @@ public class RestaurantFilterServiceTest {
 	}
 	
 	@Test
+	public void filterResultsByZipTest() {
+		List<RestaurantDTO> results = repo.findAll()
+				.stream()
+				.map((x) -> mapper.convert(x))
+				.collect(Collectors.toList());
+		List<RestaurantDTO> sanFran = service.filterByZip(results, 22222);
+		assertThat(expensiveDinerDTO).isIn(sanFran);
+		assertThat(cheapFastDTO).isNotIn(sanFran);
+		assertThat(cheapDinerDTO).isNotIn(sanFran);
+	}
+	
+	@Test
 	public void lessThanPriceTest() {
 		List<RestaurantDTO> cheaps = service.lessThanPrice(5.0);
+		assertThat(cheapFastDTO).isIn(cheaps);
+		assertThat(cheapDinerDTO).isNotIn(cheaps);
+		assertThat(expensiveDinerDTO).isNotIn(cheaps);
+	}
+	
+	@Test
+	public void lessThanPriceResultsTest() {
+		List<RestaurantDTO> results = repo.findAll()
+				.stream()
+				.map((x) -> mapper.convert(x))
+				.collect(Collectors.toList());
+		List<RestaurantDTO> cheaps = service.lessThanPrice(results, 5.0);
 		assertThat(cheapFastDTO).isIn(cheaps);
 		assertThat(cheapDinerDTO).isNotIn(cheaps);
 		assertThat(expensiveDinerDTO).isNotIn(cheaps);
@@ -124,8 +173,32 @@ public class RestaurantFilterServiceTest {
 	}
 	
 	@Test
+	public void greaterThanPriceResultsTest() {
+		List<RestaurantDTO> results = repo.findAll()
+				.stream()
+				.map((x) -> mapper.convert(x))
+				.collect(Collectors.toList());
+		List<RestaurantDTO> spendy = service.greaterThanPrice(results, 10.0);
+		assertThat(expensiveDinerDTO).isIn(spendy);
+		assertThat(cheapDinerDTO).isNotIn(spendy);
+		assertThat(cheapFastDTO).isNotIn(spendy);
+	}
+	
+	@Test
 	public void inPriceBracketTest() {
 		List<RestaurantDTO> range = service.inPriceBracket(5.0, 10.0);
+		assertThat(cheapDinerDTO).isIn(range);
+		assertThat(cheapFastDTO).isNotIn(range);
+		assertThat(expensiveDinerDTO).isNotIn(range);
+	}
+	
+	@Test
+	public void inPriceBracketResultsTest() {
+		List<RestaurantDTO> results = repo.findAll()
+				.stream()
+				.map((x) -> mapper.convert(x))
+				.collect(Collectors.toList());
+		List<RestaurantDTO> range = service.inPriceBracket(results, 5.0, 10.0);
 		assertThat(cheapDinerDTO).isIn(range);
 		assertThat(cheapFastDTO).isNotIn(range);
 		assertThat(expensiveDinerDTO).isNotIn(range);
