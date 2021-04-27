@@ -10,17 +10,4 @@ public class SearchserviceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SearchserviceApplication.class, args);
 	}
-
-//	@Bean
-//	public Docket apiDocket() {
-//
-//		Docket docket =  new Docket(DocumentationType.SWAGGER_2)
-//				.select()
-//				.apis(RequestHandlerSelectors.basePackage("com.inthebytes.searchservice.control"))
-//				.paths(PathSelectors.any())
-//				.build();
-//
-//		return docket;
-//
-//	} 
 }
