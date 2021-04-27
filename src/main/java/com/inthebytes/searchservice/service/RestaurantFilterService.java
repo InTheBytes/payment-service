@@ -8,15 +8,15 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.inthebytes.searchservice.dao.RestaurantDao;
 import com.inthebytes.searchservice.dto.RestaurantDTO;
 import com.inthebytes.searchservice.mapper.RestaurantMapper;
-import com.inthebytes.searchservice.repository.RestaurantRepository;
 
 @Service
 public class RestaurantFilterService {
 	
 	@Autowired
-	RestaurantRepository repo;
+	RestaurantDao repo;
 	
 	@Autowired
 	RestaurantMapper mapper;

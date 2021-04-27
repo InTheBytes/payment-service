@@ -32,7 +32,7 @@ import org.springframework.test.context.event.annotation.BeforeTestExecution;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
+import com.inthebytes.searchservice.dao.RestaurantDao;
 import com.inthebytes.searchservice.dto.FoodDTO;
 import com.inthebytes.searchservice.dto.LocationDTO;
 import com.inthebytes.searchservice.dto.RestaurantDTO;
@@ -40,7 +40,6 @@ import com.inthebytes.searchservice.entity.Food;
 import com.inthebytes.searchservice.entity.Location;
 import com.inthebytes.searchservice.entity.Restaurant;
 import com.inthebytes.searchservice.mapper.RestaurantMapper;
-import com.inthebytes.searchservice.repository.RestaurantRepository;
 
 @RunWith(SpringRunner.class)
 @TestInstance(Lifecycle.PER_CLASS)
@@ -48,7 +47,7 @@ public class RestaurantFilterServiceTest {
 
 
 	@Mock
-	RestaurantRepository repo;
+	RestaurantDao repo;
 	
 	@Mock
 	RestaurantMapper mapper;
