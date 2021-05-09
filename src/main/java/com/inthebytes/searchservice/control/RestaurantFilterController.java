@@ -18,7 +18,7 @@ import com.inthebytes.searchservice.dto.RestaurantDTO;
 import com.inthebytes.searchservice.service.RestaurantFilterService;
 
 @RestController
-@RequestMapping("/restaurants/filter")
+@RequestMapping("/filter/restaurants")
 public class RestaurantFilterController {
 	
 	@Autowired

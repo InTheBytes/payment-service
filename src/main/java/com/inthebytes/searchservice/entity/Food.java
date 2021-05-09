@@ -1,5 +1,15 @@
 package com.inthebytes.searchservice.entity;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import java.math.BigDecimal;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -26,13 +36,15 @@ public class Food implements Serializable {
 	@Column(name = "name")
 	private String name;
 	
-	@Column(name = "price")
+	@Basic
+	@Column(name = "price", nullable = false)
 	private Double price;
 	
-	@Column(name = "description")
+	@Basic
+	@Column(name = "description", nullable = false, length = 100)
 	private String description;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")
 	private Restaurant restaurant;
 
@@ -67,7 +79,7 @@ public class Food implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
 	public Restaurant getRestaurant() {
 		return restaurant;
 	}
@@ -82,51 +94,29 @@ public class Food implements Serializable {
 
 	
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((price == null) ? 0 : price.hashCode());
-		result = prime * result + ((restaurant == null) ? 0 : restaurant.hashCode());
-		return result;
-	}
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Food other = (Food) obj;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (price == null) {
-			if (other.price != null)
-				return false;
-		} else if (!price.equals(other.price))
-			return false;
-		if (restaurant == null) {
-			if (other.restaurant != null)
-				return false;
-		} else if (!restaurant.equals(other.restaurant))
-			return false;
+		Food food = (Food) o;
+
+		if (foodId != null ? !foodId.equals(food.foodId) : food.foodId != null) return false;
+
 		return true;
 	}
 
+	@Override
+	public int hashCode() {
+		int result = foodId != null ? foodId.hashCode() : 0;
+		result = 31 * result + (restaurant != null ? restaurant.hashCode() : 0);
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		result = 31 * result + (price != null ? price.hashCode() : 0);
+		result = 31 * result + (description != null ? description.hashCode() : 0);
+		return result;
+	}
+	
 	@Override
 	public String toString() {
 		return "Food [name=" + name + ", price=" + price + ", description=" + description + "]";
 	}
 }
-

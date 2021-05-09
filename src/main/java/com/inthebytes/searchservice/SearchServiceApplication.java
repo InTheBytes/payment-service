@@ -5,9 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class SearchserviceApplication {
+public class SearchServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SearchserviceApplication.class, args);
+		SpringApplication.run(SearchServiceApplication.class, args);
 	}
 }
