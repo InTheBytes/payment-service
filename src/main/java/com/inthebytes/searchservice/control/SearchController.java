@@ -1,4 +1,4 @@
-package com.inthebytes.searchservice.controller;
+package com.inthebytes.searchservice.control;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.inthebytes.searchservice.dto.FoodDTO;
+import com.inthebytes.searchservice.dto.RestaurantDTO;
 import com.inthebytes.searchservice.entity.Food;
 import com.inthebytes.searchservice.entity.Restaurant;
 import com.inthebytes.searchservice.service.SearchService;
@@ -27,14 +29,14 @@ public class SearchController {
 	
 	@RequestMapping(path = "/food", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<List<Food>> foodSearch(@RequestBody String query) {
-		List<Food> result;
-		ResponseEntity<List<Food>> response;
+	public ResponseEntity<List<FoodDTO>> foodSearch(@RequestBody String query) {
+		List<FoodDTO> result;
+		ResponseEntity<List<FoodDTO>> response;
 		try {
 			result = service.foodSearch(query);
-			response = new ResponseEntity<List<Food>>(result, HttpStatus.ACCEPTED);
+			response = new ResponseEntity<List<FoodDTO>>(result, HttpStatus.ACCEPTED);
 		} catch (SQLException e) {
-			response = new ResponseEntity<List<Food>>(HttpStatus.BAD_REQUEST);
+			response = new ResponseEntity<List<FoodDTO>>(HttpStatus.BAD_REQUEST);
 			e.printStackTrace();
 		}
 		return response;
@@ -42,14 +44,14 @@ public class SearchController {
 	
 	@RequestMapping(path = "/restaurant", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<List<Restaurant>> restaurantSearch(@RequestBody String query) {
-		List<Restaurant> result;
-		ResponseEntity<List<Restaurant>> response;
+	public ResponseEntity<List<RestaurantDTO>> restaurantSearch(@RequestBody String query) {
+		List<RestaurantDTO> result;
+		ResponseEntity<List<RestaurantDTO>> response;
 		try {
 			result = service.restaurantSearch(query);
-			response = new ResponseEntity<List<Restaurant>>(result, HttpStatus.ACCEPTED);
+			response = new ResponseEntity<List<RestaurantDTO>>(result, HttpStatus.ACCEPTED);
 		} catch (SQLException e) {
-			response = new ResponseEntity<List<Restaurant>>(HttpStatus.BAD_REQUEST);
+			response = new ResponseEntity<List<RestaurantDTO>>(HttpStatus.BAD_REQUEST);
 			e.printStackTrace();
 		}
 		return response;
