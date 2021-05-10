@@ -51,7 +51,6 @@ public class Food implements Serializable {
 	public Long getFoodId() {
 		return foodId;
 	}
-
 	public void setFoodId(Long foodId) {
 		this.foodId = foodId;
 	}
@@ -59,7 +58,6 @@ public class Food implements Serializable {
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -92,7 +90,6 @@ public class Food implements Serializable {
 		return serialVersionUID;
 	}
 
-	
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -114,7 +111,7 @@ public class Food implements Serializable {
 		result = 31 * result + (description != null ? description.hashCode() : 0);
 		return result;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Food [name=" + name + ", price=" + price + ", description=" + description + "]";

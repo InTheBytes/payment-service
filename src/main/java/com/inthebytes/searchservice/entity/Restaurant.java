@@ -49,7 +49,6 @@ public class Restaurant implements Serializable {
 	public Long getRestaurantId() {
 		return restaurantId;
 	}
-
 	public void setRestaurantId(Long restaurantId) {
 		this.restaurantId = restaurantId;
 	}
@@ -57,7 +56,6 @@ public class Restaurant implements Serializable {
 	public Location getLocation() {
 		return location;
 	}
-
 	public void setLocation(Location location) {
 		this.location = location;
 	}
@@ -65,7 +63,6 @@ public class Restaurant implements Serializable {
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -73,7 +70,6 @@ public class Restaurant implements Serializable {
 	public String getCuisine() {
 		return cuisine;
 	}
-
 	public void setCuisine(String cuisine) {
 		this.cuisine = cuisine;
 	}
@@ -103,7 +99,6 @@ public class Restaurant implements Serializable {
 		result = 31 * result + (cuisine != null ? cuisine.hashCode() : 0);
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object o) {
