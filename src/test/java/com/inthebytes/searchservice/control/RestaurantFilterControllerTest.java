@@ -8,7 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hamcrest.Matchers;
+import com.inthebytes.searchservice.controller.RestaurantFilterController;
+
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -20,16 +21,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inthebytes.searchservice.dto.FoodDTO;
 import com.inthebytes.searchservice.dto.LocationDTO;
 import com.inthebytes.searchservice.dto.RestaurantDTO;
-import com.inthebytes.searchservice.entity.Restaurant;
 import com.inthebytes.searchservice.service.RestaurantFilterService;
 
 @WebMvcTest(RestaurantFilterController.class)

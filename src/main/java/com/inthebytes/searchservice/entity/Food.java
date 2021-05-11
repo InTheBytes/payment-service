@@ -1,5 +1,7 @@
 package com.inthebytes.searchservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,6 +48,7 @@ public class Food implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")
+	@JsonBackReference
 	private Restaurant restaurant;
 
 	public Long getFoodId() {

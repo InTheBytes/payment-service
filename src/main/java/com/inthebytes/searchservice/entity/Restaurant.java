@@ -1,5 +1,7 @@
 package com.inthebytes.searchservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,6 +43,7 @@ public class Restaurant implements Serializable {
 	private String cuisine;
 
 	@OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@JsonManagedReference
 	private List<Food> foods;
 
 	@Transient
