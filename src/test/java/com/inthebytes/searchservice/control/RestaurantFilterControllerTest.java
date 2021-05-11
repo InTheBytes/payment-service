@@ -34,6 +34,8 @@ import com.inthebytes.searchservice.service.RestaurantFilterService;
 @AutoConfigureMockMvc
 @TestInstance(Lifecycle.PER_CLASS)
 public class RestaurantFilterControllerTest {
+	
+	private String endpoint = "/filter/restaurants";
 
 	@MockBean
 	RestaurantFilterService service;
@@ -73,7 +75,7 @@ public class RestaurantFilterControllerTest {
 	public void filterByZipTest() throws Exception {
 		when(service.applyFilters(11111, "_", "_", 0.0, 0.0)).thenReturn(results);
 
-		mock.perform(get("/restaurants/filter?zip-code=11111")
+		mock.perform(get(endpoint + "?zip-code=11111")
 				.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(jsonPath("$", hasSize(4)));
@@ -83,7 +85,7 @@ public class RestaurantFilterControllerTest {
 	public void filterByZipEmptyTest() throws Exception {
 		when(service.applyFilters(11111, "_", "_", 0.0, 0.0)).thenReturn(null);
 
-		mock.perform(get("/restaurants/filter?zip-code=11111"))
+		mock.perform(get(endpoint + "?zip-code=11111"))
 		.andExpect(MockMvcResultMatchers.status().isNoContent());
 	}
 
@@ -91,7 +93,7 @@ public class RestaurantFilterControllerTest {
 	public void filterResultByZipTest() throws Exception {
 		when(service.layerFilters(results, 11111, "_", "_", 0.0, 0.0)).thenReturn(smallResults);
 
-		mock.perform(post("/restaurants/filter?zip-code=11111")
+		mock.perform(post(endpoint + "?zip-code=11111")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(results)))
 		.andExpect(MockMvcResultMatchers.status().isOk())
@@ -102,7 +104,7 @@ public class RestaurantFilterControllerTest {
 	public void filterResultsByZipEmptyTest() throws Exception {
 		when(service.layerFilters(results, 11111, "_", "_", 0.0, 0.0)).thenReturn(null);
 
-		mock.perform(post("/restaurants/filter?zip-code=11111")
+		mock.perform(post(endpoint + "?zip-code=11111")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(results)))
 		.andExpect(MockMvcResultMatchers.status().isNoContent());
@@ -112,7 +114,7 @@ public class RestaurantFilterControllerTest {
 	public void filterByCityTest() throws Exception {
 		when(service.applyFilters(0, "Sacramento", "_", 0.0, 0.0)).thenReturn(results);
 
-		mock.perform(get("/restaurants/filter?city=Sacramento")
+		mock.perform(get(endpoint + "?city=Sacramento")
 				.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(jsonPath("$", hasSize(4)));
@@ -122,7 +124,7 @@ public class RestaurantFilterControllerTest {
 	public void filterByCityEmptyTest() throws Exception {
 		when(service.applyFilters(0, "Sacramento", "_", 0.0, 0.0)).thenReturn(null);
 
-		mock.perform(get("/restaurants/filter?city=Sacramento"))
+		mock.perform(get(endpoint + "?city=Sacramento"))
 		.andExpect(MockMvcResultMatchers.status().isNoContent());
 	}
 	
@@ -130,7 +132,7 @@ public class RestaurantFilterControllerTest {
 	public void filterResultsByCityTest() throws Exception {
 		when(service.layerFilters(results, 0, "Sacramento", "_", 0.0, 0.0)).thenReturn(smallResults);
 
-		mock.perform(post("/restaurants/filter?city=Sacramento")
+		mock.perform(post(endpoint + "?city=Sacramento")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(results)))
 		.andExpect(MockMvcResultMatchers.status().isOk())
@@ -141,7 +143,7 @@ public class RestaurantFilterControllerTest {
 	public void filterResultsByCityEmptyTest() throws Exception {
 		when(service.layerFilters(results, 0, "Sacramento", "_", 0.0, 0.0)).thenReturn(null);
 
-		mock.perform(post("/restaurants/filter?city=Sacramento")
+		mock.perform(post(endpoint + "?city=Sacramento")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(results)))
 		.andExpect(MockMvcResultMatchers.status().isNoContent());
@@ -151,7 +153,7 @@ public class RestaurantFilterControllerTest {
 	public void filterByCuisineTest() throws Exception {
 		when(service.applyFilters(0, "_", "Any", 0.0, 0.0)).thenReturn(results);
 
-		mock.perform(get("/restaurants/filter?cuisine=Any")
+		mock.perform(get(endpoint + "?cuisine=Any")
 				.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(jsonPath("$", hasSize(4)));
@@ -161,7 +163,7 @@ public class RestaurantFilterControllerTest {
 	public void filterByCuisineEmptyTest() throws Exception {
 		when(service.applyFilters(0, "_", "Any", 0.0, 0.0)).thenReturn(null);
 
-		mock.perform(get("/restaurants/filter?cuisine=Any"))
+		mock.perform(get(endpoint + "?cuisine=Any"))
 		.andExpect(MockMvcResultMatchers.status().isNoContent());
 	}
 	
@@ -170,7 +172,7 @@ public class RestaurantFilterControllerTest {
 	public void filterResultsByCuisineTest() throws Exception {
 		when(service.layerFilters(results, 0, "_", "Any", 0.0, 0.0)).thenReturn(smallResults);
 
-		mock.perform(post("/restaurants/filter?cuisine=Any")
+		mock.perform(post(endpoint + "?cuisine=Any")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(results)))
 		.andExpect(MockMvcResultMatchers.status().isOk())
@@ -181,7 +183,7 @@ public class RestaurantFilterControllerTest {
 	public void filterResultsByCuisineEmptyTest() throws Exception {
 		when(service.layerFilters(results, 0, "_", "Any", 0.0, 0.0)).thenReturn(null);
 
-		mock.perform(post("/restaurants/filter?cuisine=None")
+		mock.perform(post(endpoint + "?cuisine=None")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(results)))
 		.andExpect(MockMvcResultMatchers.status().isNoContent());
@@ -191,7 +193,7 @@ public class RestaurantFilterControllerTest {
 	public void filterByMaxPriceTest() throws Exception {
 		when(service.applyFilters(0, "_", "_", 10.00, 0.0)).thenReturn(results);
 
-		mock.perform(get("/restaurants/filter?price-max=10.00")
+		mock.perform(get(endpoint + "?price-max=10.00")
 				.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(jsonPath("$", hasSize(4)));
@@ -201,7 +203,7 @@ public class RestaurantFilterControllerTest {
 	public void filterByMaxPriceEmptyTest() throws Exception {
 		when(service.applyFilters(0, "_", "_", 1.0, 0.0)).thenReturn(null);
 
-		mock.perform(get("/restaurants/filter?price-max=1.0"))
+		mock.perform(get(endpoint + "?price-max=1.0"))
 		.andExpect(MockMvcResultMatchers.status().isNoContent());
 	}
 	
@@ -209,7 +211,7 @@ public class RestaurantFilterControllerTest {
 	public void filterResultByMaxPriceTest() throws Exception {
 		when(service.layerFilters(results, 0, "_", "_", 10.00, 0.0)).thenReturn(smallResults);
 
-		mock.perform(post("/restaurants/filter?price-max=10.00")
+		mock.perform(post(endpoint + "?price-max=10.00")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(results)))
 		.andExpect(MockMvcResultMatchers.status().isOk())
@@ -220,7 +222,7 @@ public class RestaurantFilterControllerTest {
 	public void filterResultsByMaxPriceEmptyTest() throws Exception {
 		when(service.layerFilters(results, 0, "_", "_", 10.00, 0.0)).thenReturn(null);
 
-		mock.perform(post("/restaurants/filter?price-max=1.0")
+		mock.perform(post(endpoint + "?price-max=1.0")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(results)))
 		.andExpect(MockMvcResultMatchers.status().isNoContent());
@@ -230,7 +232,7 @@ public class RestaurantFilterControllerTest {
 	public void filterByMinPriceTest() throws Exception {
 		when(service.applyFilters(0, "_", "_", 0.0, 10.00)).thenReturn(results);
 
-		mock.perform(get("/restaurants/filter?price-min=10.00")
+		mock.perform(get(endpoint + "?price-min=10.00")
 				.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(jsonPath("$", hasSize(4)));
@@ -240,7 +242,7 @@ public class RestaurantFilterControllerTest {
 	public void filterByMinPriceEmptyTest() throws Exception {
 		when(service.applyFilters(0, "_", "_", 0.0, 1.00)).thenReturn(null);
 
-		mock.perform(get("/restaurants/filter?price-min=1.0"))
+		mock.perform(get(endpoint + "?price-min=1.0"))
 		.andExpect(MockMvcResultMatchers.status().isNoContent());
 	}
 	
@@ -248,7 +250,7 @@ public class RestaurantFilterControllerTest {
 	public void filterResultByMinPriceTest() throws Exception {
 		when(service.layerFilters(results, 0, "_", "_", 0.0, 10.00)).thenReturn(smallResults);
 
-		mock.perform(post("/restaurants/filter?price-min=10.00")
+		mock.perform(post(endpoint + "?price-min=10.00")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(results)))
 		.andExpect(MockMvcResultMatchers.status().isOk())
@@ -259,7 +261,7 @@ public class RestaurantFilterControllerTest {
 	public void filterResultByMinPriceEmptyTest() throws Exception {
 		when(service.layerFilters(results, 0, "_", "_", 0.0, 1.00)).thenReturn(null);
 
-		mock.perform(post("/restaurants/filter?price-min=1.0")
+		mock.perform(post(endpoint + "?price-min=1.0")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(results)))
 		.andExpect(MockMvcResultMatchers.status().isNoContent());
@@ -269,7 +271,7 @@ public class RestaurantFilterControllerTest {
 	public void filterByPriceRangeTest() throws Exception {
 		when(service.applyFilters(0, "_", "_", 20.00, 10.00)).thenReturn(results);
 
-		mock.perform(get("/restaurants/filter?price-min=10.0&price-max=20.0")
+		mock.perform(get(endpoint + "?price-min=10.0&price-max=20.0")
 				.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(jsonPath("$", hasSize(4)));
@@ -279,7 +281,7 @@ public class RestaurantFilterControllerTest {
 	public void filterByRangeEmptyTest() throws Exception {
 		when(service.applyFilters(0, "_", "_", 10.0, 1.0)).thenReturn(null);
 
-		mock.perform(get("/restaurants/filter?price-max=10.0&price-min=1.0"))
+		mock.perform(get(endpoint + "?price-max=10.0&price-min=1.0"))
 		.andExpect(MockMvcResultMatchers.status().isNoContent());
 	}
 	
@@ -287,7 +289,7 @@ public class RestaurantFilterControllerTest {
 	public void filterResultByPriceRangeTest() throws Exception {
 		when(service.layerFilters(results, 0, "_", "_", 20.00, 10.00)).thenReturn(smallResults);
 
-		mock.perform(post("/restaurants/filter?price-min=10.0&price-max=20.0")
+		mock.perform(post(endpoint + "?price-min=10.0&price-max=20.0")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(results)))
 		.andExpect(MockMvcResultMatchers.status().isOk())
@@ -298,7 +300,7 @@ public class RestaurantFilterControllerTest {
 	public void filterResultByRangeEmptyTest() throws Exception {
 		when(service.layerFilters(results, 0, "_", "_", 1.0, 10.0)).thenReturn(null);
 
-		mock.perform(post("/restaurants/filter?price-max=10&price-min=1")
+		mock.perform(post(endpoint + "?price-max=10&price-min=1")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(results)))
 		.andExpect(MockMvcResultMatchers.status().isNoContent());
@@ -308,7 +310,7 @@ public class RestaurantFilterControllerTest {
 	public void filterComboTest() throws Exception {
 		when(service.applyFilters(11111, "_", "Any", 0.0, 0.0)).thenReturn(smallResults);
 
-		mock.perform(get("/restaurants/filter?zip-code=11111&cuisine=Any")
+		mock.perform(get(endpoint + "?zip-code=11111&cuisine=Any")
 				.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(jsonPath("$", hasSize(2)));
@@ -319,7 +321,7 @@ public class RestaurantFilterControllerTest {
 	public void filterComboEmptyTest() throws Exception {
 		when(service.applyFilters(11111, "_", "Any", 0.0, 0.0)).thenReturn(null);
 
-		mock.perform(get("/restaurants/filter?zip-code=11111&cuisine=Any"))
+		mock.perform(get(endpoint + "?zip-code=11111&cuisine=Any"))
 		.andExpect(MockMvcResultMatchers.status().isNoContent());
 	}
 	
@@ -327,7 +329,7 @@ public class RestaurantFilterControllerTest {
 	public void filterComboPostTest() throws Exception {
 		when(service.layerFilters(results, 11111, "_", "Any", 0.0, 0.0)).thenReturn(smallResults);
 
-		mock.perform(post("/restaurants/filter?zip-code=11111&cuisine=Any")
+		mock.perform(post(endpoint + "?zip-code=11111&cuisine=Any")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(results)))
 		.andExpect(MockMvcResultMatchers.status().isOk())
@@ -339,7 +341,7 @@ public class RestaurantFilterControllerTest {
 	public void filterComboEmptyPostTest() throws Exception {
 		when(service.layerFilters(results, 11111, "_", "Any", 0.0, 0.0)).thenReturn(null);
 
-		mock.perform(post("/restaurants/filter?zip-code=11111&cuisine=Any")
+		mock.perform(post(endpoint + "?zip-code=11111&cuisine=Any")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(results)))
 		.andExpect(MockMvcResultMatchers.status().isNoContent());
