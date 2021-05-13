@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.inthebytes.searchservice.dao.FoodDao;
@@ -27,14 +30,13 @@ public class SearchService {
 	@Autowired
 	RestaurantMapper mapper;
 	
-	public List<FoodDTO> foodSearch(String query) throws SQLException {
-		List<Food> result = foodRepo.findByNameContaining(query);
-		System.out.println(result);
-		return result.stream().map((x) -> mapper.convert(x)).collect(Collectors.toList());
+	public Page<FoodDTO> foodSearch(String query, String sort, String[] filter, Boolean ascending, Integer pageNumber) throws SQLException {
+		return foodRepo.findByNameContaining(query, PageRequest.of(pageNumber, 10, Sort.by((ascending)? Sort.Direction.ASC : Sort.Direction.DESC, sort)))
+				.map((x) -> mapper.convert(x));
 	}
 	
-	public List<RestaurantDTO> restaurantSearch(String query) throws SQLException {
-		List<Restaurant> result = restaurantRepo.findByNameContaining(query);
-		return result.stream().map((x) -> mapper.convert(x)).collect(Collectors.toList());
+	public Page<RestaurantDTO> restaurantSearch(String query, String sort, String[] filter, Boolean ascending, Integer pageNumber) throws SQLException {
+		return restaurantRepo.findByNameContaining(query, PageRequest.of(pageNumber, 10, Sort.by((ascending)? Sort.Direction.ASC : Sort.Direction.DESC, sort)))
+				.map((x) -> mapper.convert(x));
 	}
 }

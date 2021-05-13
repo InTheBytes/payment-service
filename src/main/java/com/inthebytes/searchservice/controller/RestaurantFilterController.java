@@ -1,4 +1,4 @@
-package com.inthebytes.searchservice.control;
+package com.inthebytes.searchservice.controller;
 
 import java.util.List;
 

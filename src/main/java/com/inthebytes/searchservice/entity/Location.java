@@ -1,7 +1,6 @@
 package com.inthebytes.searchservice.entity;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,7 +37,6 @@ public class Location implements Serializable {
 	public Long getLocationId() {
 		return locationId;
 	}
-
 	public void setLocationId(Long locationId) {
 		this.locationId = locationId;
 	}
@@ -46,7 +44,6 @@ public class Location implements Serializable {
 	public String getStreet() {
 		return street;
 	}
-
 	public void setStreet(String street) {
 		this.street = street;
 	}
@@ -54,7 +51,6 @@ public class Location implements Serializable {
 	public String getUnit() {
 		return unit;
 	}
-
 	public void setUnit(String unit) {
 		this.unit = unit;
 	}
@@ -62,7 +58,6 @@ public class Location implements Serializable {
 	public String getCity() {
 		return city;
 	}
-
 	public void setCity(String city) {
 		this.city = city;
 	}
@@ -70,7 +65,6 @@ public class Location implements Serializable {
 	public String getState() {
 		return state;
 	}
-
 	public void setState(String state) {
 		this.state = state;
 	}
@@ -78,7 +72,6 @@ public class Location implements Serializable {
 	public Integer getZipCode() {
 		return zipCode;
 	}
-
 	public void setZipCode(Integer zipCode) {
 		this.zipCode = zipCode;
 	}
@@ -86,8 +79,6 @@ public class Location implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
-	
 
 	@Override
 	public int hashCode() {
@@ -111,6 +102,7 @@ public class Location implements Serializable {
 				return false;
 		} else if (!locationId.equals(other.locationId))
 			return false;
+
 		return true;
 	}
 
