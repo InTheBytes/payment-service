@@ -33,8 +33,13 @@ public class SearchController {
 	
 	@RequestMapping(path = "/food", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<?> foodSearch(@RequestParam(value = "query") String query, @RequestParam(value = "sort", required = false, defaultValue = "low") String sortOption, @RequestParam(value = "filter", required = false, defaultValue = "") String[] filters, @RequestParam(value = "page", required = false, defaultValue = "1") String pageNumber) {
-		Page<Food> result;
+	public ResponseEntity<?> foodSearch(
+			@RequestParam(value = "query") String query, 
+			@RequestParam(value = "sort", required = false, defaultValue = "low") String sortOption, 
+			@RequestParam(value = "filter", required = false, defaultValue = "") String[] filters, 
+			@RequestParam(value = "page", required = false, defaultValue = "0") String pageNumber) {
+		
+		Page<FoodDTO> result;
 		ResponseEntity<?> response;
 
 		try {
@@ -71,8 +76,13 @@ public class SearchController {
 	
 	@RequestMapping(path = "/restaurant", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<?> restaurantSearch(@RequestParam(value = "query") String query, @RequestParam(value = "sort", required = false, defaultValue = "low") String sortOption, @RequestParam(value = "filter", required = false, defaultValue = "") String[] filters, @RequestParam(value = "page", required = false, defaultValue = "1") String pageNumber) {
-		Page<Restaurant> result;
+	public ResponseEntity<?> restaurantSearch(
+			@RequestParam(value = "query") String query, 
+			@RequestParam(value = "sort", required = false, defaultValue = "low") String sortOption, 
+			@RequestParam(value = "filter", required = false, defaultValue = "") String[] filters, 
+			@RequestParam(value = "page", required = false, defaultValue = "0") String pageNumber) {
+		
+		Page<RestaurantDTO> result;
 		ResponseEntity<?> response;
 
 		try {
