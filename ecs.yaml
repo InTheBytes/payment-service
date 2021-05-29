@@ -1,0 +1,147 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: ECS Base Template
+
+Parameters:
+  ApplicationEnvironment:
+    Type: String
+  ApplicationName:
+    Type: String
+  ECRRepositoryUri:
+    Type: String
+    Description: Full Uri for consumer docker image to run in container
+
+Resources:
+
+  # Role for ECS container
+  ContainerExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub '${ApplicationName}-${ApplicationEnvironment}-ContainerExecutionRole'
+      Description: IAM Role for ECS container
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - ecs-tasks.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Tags:
+          - Key: ApplicationName
+            Value: !Ref ApplicationName
+          - Key: ApplicationEnvironment
+            Value: !Ref ApplicationEnvironment
+
+  # Fargate ECS Service
+  MicroService:
+    Type: AWS::ECS::Service
+    DependsOn: ApiListenerRule
+    Properties:
+      ServiceName: !Join ['-', [!Ref ApplicationName, !Ref ApplicationEnvironment]]
+      # Cluster: !Sub '{{resolve:secretsmanager:InTheBytes/${ApplicationEnvironment}/Secret-Name:SecretString:ecs-cluster-name}}'
+      # TODO change back to match above where secret called
+      Cluster: '{{resolve:secretsmanager:CFT-Secrets:SecretString:ecs-cluster-name}}'
+      TaskDefinition: !Ref TaskDefinition
+      DeploymentConfiguration:
+        MinimumHealthyPercent: 100
+        MaximumPercent: 200
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          Subnets:
+            -  '{{resolve:secretsmanager:CFT-Secrets:SecretString:Private-Subnet-A}}'
+          SecurityGroups:
+            -  '{{resolve:secretsmanager:CFT-Secrets:SecretString:Base-SecGroup}}'
+      LoadBalancers:
+        - ContainerName: !Ref ApplicationName
+          ContainerPort: 8080
+          TargetGroupArn: !Ref TargetGroup
+
+  # Fargate Task Definition
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Sub ${ApplicationName}-${ApplicationEnvironment}
+      RequiresCompatibilities:
+        - FARGATE
+      Memory: '1024'
+      Cpu: '256'
+      NetworkMode: awsvpc
+      ExecutionRoleArn: '{{resolve:secretsmanager:CFT-Secrets:SecretString:ecs-task-execution-role}}'
+      TaskRoleArn: !Ref ContainerExecutionRole
+      ContainerDefinitions:
+        - Name: !Ref ApplicationName
+          Image: !Ref ECRRepositoryUri # This gets passed as param from ecs.json generated in buildspec
+          PortMappings:
+            - ContainerPort: 8080
+          # Secrets:
+          #   - Name: DB_USERNAME
+          #     ValueFrom: '{{resolve:secretsmanager:CFT-Secrets:SecretString:rds-user-secret-arn}}'
+          #   - Name: DB_PASSWORD
+          #     ValueFrom: '{{resolve:secretsmanager:CFT-Secrets:SecretString:rds-password-secret-arn}}'
+          Environment:
+            - Name: SL_DB_USER
+              Value: '{{resolve:secretsmanager:CFT-Secrets:SecretString:rds-username}}'
+            - Name: SL_DB_PASS
+              Value: '{{resolve:secretsmanager:CFT-Secrets:SecretString:rds-password}}'
+            - Name: SL_EMAIL
+              Value: '{{resolve:secretsmanager:CFT-Secrets:SecretString:email}}'
+            - Name: APPLICATION_NAME
+              Value: !Sub ${ApplicationName}
+            - Name: APPLICATION_ENVIRONMENT
+              Value: !Ref ApplicationEnvironment
+            - Name: PORT
+              Value: '8080'
+            - Name: SL_DB_URL
+              Value: !Join
+                - ''
+                - - 'jdbc:mysql://{{resolve:secretsmanager:CFT-Secrets:SecretString:host}}'
+                  - ':{{resolve:secretsmanager:CFT-Secrets:SecretString:port}}'
+                  - '/{{resolve:secretsmanager:CFT-Secrets:SecretString:dbname}}'
+          Essential: true
+          Memory: 512
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: !Sub /ecs/Team-Name/${ApplicationName}/${ApplicationEnvironment}
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: ecs
+              awslogs-create-group: 'true'
+
+  # Optional
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 180
+      HealthCheckPath: '/user?page-size=1&page=1'
+      HealthCheckTimeoutSeconds: 30
+      HealthCheckPort: '8080'
+      UnhealthyThresholdCount: 2
+      HealthyThresholdCount: 2
+      Name: !Sub '${ApplicationName}-${ApplicationEnvironment}-tg'
+      Port: 8080
+      Protocol: HTTP
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: '60'
+      TargetType: ip
+      VpcId: '{{resolve:secretsmanager:CFT-Secrets:SecretString:vpc-id}}'
+
+  ApiListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Conditions:
+        - Field: path-pattern
+          Values:
+            - /search*
+            - /search/*
+            - /filter*
+            - /filter/*
+      Actions:
+        - Type: forward
+          TargetGroupArn: !Ref TargetGroup
+      ListenerArn: '{{resolve:secretsmanager:CFT-Secrets:SecretString:listener-arn}}'
+      Priority: 11

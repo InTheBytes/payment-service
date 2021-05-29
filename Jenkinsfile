@@ -45,6 +45,12 @@ pipeline {
                 }
             }
         }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying cloudformation..'
+                sh "aws cloudformation deploy --stack-name StackLunchSearchService --template-file ./ecs.yaml --parameter-overrides ApplicationName=SearchService ApplicationEnvironment=dev ECRRepositoryUri=241465518750.dkr.ecr.us-east-2.amazonaws.com/searchservice:latest --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM --region us-east-2"
+            }
+        }
     }
     post {
         always {
