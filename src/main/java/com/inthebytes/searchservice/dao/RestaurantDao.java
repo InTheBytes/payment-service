@@ -11,8 +11,8 @@ import com.inthebytes.searchservice.entity.Restaurant;
 import java.util.List;
 
 @Repository
-public interface RestaurantDao extends JpaRepository<Restaurant, Long>, JpaSpecificationExecutor<Restaurant> {
-	Restaurant findByRestaurantId(Long id);
+public interface RestaurantDao extends JpaRepository<Restaurant, String>, JpaSpecificationExecutor<Restaurant> {
+	Restaurant findByRestaurantId(String id);
 	Restaurant findByName(String name);
 	Page<Restaurant> findByNameContaining(String query, Pageable pageable);
 }

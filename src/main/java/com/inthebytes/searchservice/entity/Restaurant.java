@@ -30,7 +30,7 @@ public class Restaurant implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "restaurant_id", nullable = false)
-	private Long restaurantId;
+	private String restaurantId;
 
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "location_id")
@@ -49,10 +49,10 @@ public class Restaurant implements Serializable {
 	@Transient
 	private Double price;
 
-	public Long getRestaurantId() {
+	public String getRestaurantId() {
 		return restaurantId;
 	}
-	public void setRestaurantId(Long restaurantId) {
+	public void setRestaurantId(String restaurantId) {
 		this.restaurantId = restaurantId;
 	}
 

@@ -21,7 +21,7 @@ public class LocationDTO {
 	@Id
 	@Nullable
 	@JsonIgnore
-	private Long locationId;
+	private String locationId;
 	
 	@NonNull
 	private String street;
@@ -38,11 +38,11 @@ public class LocationDTO {
 	@NonNull
 	private Integer zipCode;
 
-	public Long getLocationId() {
+	public String getLocationId() {
 		return locationId;
 	}
 
-	public void setLocationId(Long locationId) {
+	public void setLocationId(String locationId) {
 		this.locationId = locationId;
 	}
 

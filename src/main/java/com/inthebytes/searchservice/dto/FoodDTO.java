@@ -18,7 +18,7 @@ public class FoodDTO {
 	@Id
 	@Nullable
 	@JsonIgnore
-	private Long foodId;
+	private String foodId;
 
 	@NonNull
 	private String name;
@@ -33,11 +33,11 @@ public class FoodDTO {
 	@JsonIgnore
 	private RestaurantDTO restaurant;
 
-	public Long getFoodId() {
+	public String getFoodId() {
 		return foodId;
 	}
 
-	public void setFoodId(Long foodId) {
+	public void setFoodId(String foodId) {
 		this.foodId = foodId;
 	}
 

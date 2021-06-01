@@ -11,6 +11,6 @@ import com.inthebytes.searchservice.entity.Food;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 @Repository
-public interface FoodDao extends JpaRepository<Food, Long>, JpaSpecificationExecutor<Food> {
+public interface FoodDao extends JpaRepository<Food, String>, JpaSpecificationExecutor<Food> {
 	Page<Food> findByNameContaining(String query, Pageable pageable);
 }

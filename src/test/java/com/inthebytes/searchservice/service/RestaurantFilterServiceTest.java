@@ -225,7 +225,7 @@ public class RestaurantFilterServiceTest {
 
 	private Restaurant fastFood() {
 		Restaurant cheapFast = new Restaurant();
-		cheapFast.setRestaurantId(1L);
+		cheapFast.setRestaurantId("1");
 		cheapFast.setName("Burgers");
 		cheapFast.setCuisine("Fast Food");
 		cheapFast.setLocation(makeLocation());
@@ -240,7 +240,7 @@ public class RestaurantFilterServiceTest {
 
 	private Restaurant diner() {
 		Restaurant cheapDiner = new Restaurant();
-		cheapDiner.setRestaurantId(2L);
+		cheapDiner.setRestaurantId("2");
 		cheapDiner.setName("My Diner");
 		cheapDiner.setCuisine("Diner");
 		cheapDiner.setLocation(makeLocation());
@@ -259,7 +259,7 @@ public class RestaurantFilterServiceTest {
 
 	private Restaurant expensive() {
 		Restaurant expensiveDiner = new Restaurant();
-		expensiveDiner.setRestaurantId(3L);
+		expensiveDiner.setRestaurantId("3");
 		expensiveDiner.setName("Someone else's Diner");
 		expensiveDiner.setCuisine("Diner");
 		expensiveDiner.setLocation(makeLocation());
@@ -293,7 +293,7 @@ public class RestaurantFilterServiceTest {
 	
 	private RestaurantDTO fastFoodDTO() {
 		RestaurantDTO cheapFast = new RestaurantDTO("Burgers", "Fast Food", makeLocationDTO());
-		cheapFast.setRestaurantId(1L);
+		cheapFast.setRestaurantId("1");
 		List<FoodDTO> cheapFastFood = new ArrayList<FoodDTO>();
 		cheapFastFood.add(makeFoodDTO("Burger", 3.59));
 		cheapFastFood.add(makeFoodDTO("Fries", 1.99));
@@ -305,7 +305,7 @@ public class RestaurantFilterServiceTest {
 
 	private RestaurantDTO dinerDTO() {
 		RestaurantDTO cheapDiner = new RestaurantDTO("My Diner", "Diner", makeLocationDTO());
-		cheapDiner.setRestaurantId(2L);
+		cheapDiner.setRestaurantId("2");
 		List<FoodDTO> cheapDinerFood = new ArrayList<FoodDTO>();
 		cheapDinerFood.add(makeFoodDTO("Grand Slam", 8.20));
 		cheapDinerFood.add(makeFoodDTO("Scrambled Eggs", 4.00));
@@ -321,7 +321,7 @@ public class RestaurantFilterServiceTest {
 
 	private RestaurantDTO expensiveDTO() {
 		RestaurantDTO expensiveDiner = new RestaurantDTO("Someone else's Diner", "Diner", makeLocationDTO());
-		expensiveDiner.setRestaurantId(3L);
+		expensiveDiner.setRestaurantId("3");
 		expensiveDiner.getLocation().setCity("San Francisco");
 		expensiveDiner.getLocation().setZipCode(22222);
 		List<FoodDTO> expensiveDinerFood = new ArrayList<FoodDTO>();
