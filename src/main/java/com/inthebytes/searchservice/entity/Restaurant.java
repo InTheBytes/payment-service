@@ -21,6 +21,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.PostLoad;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name = "restaurant")
 public class Restaurant implements Serializable {
@@ -28,7 +30,11 @@ public class Restaurant implements Serializable {
 	private static final long serialVersionUID = -8756584311354409044L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(
+	    name = "UUID",
+	    strategy = "org.hibernate.id.UUIDGenerator"
+	)
 	@Column(name = "restaurant_id", nullable = false)
 	private String restaurantId;
 

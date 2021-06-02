@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import java.math.BigDecimal;
 
 import java.io.Serializable;
@@ -31,7 +33,11 @@ public class Food implements Serializable {
 	private static final long serialVersionUID = -1018612674070118304L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(
+	    name = "UUID",
+	    strategy = "org.hibernate.id.UUIDGenerator"
+	)
 	@Column(name = "food_id")
 	private String foodId;
 	
