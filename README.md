@@ -1,3 +1,3 @@
-payment-service
-Microservice API for Stack Lunch payment functionality
-   
+# payment-service
+Spring Microservice for handling payments and Stripe integration
+
