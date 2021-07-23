@@ -10,10 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.inthebytes</groupId>
-	<artifactId>searchservice</artifactId>
+	<artifactId>paymentservice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>searchservice</name>
-	<description>Search Service</description>
+	<name>paymentservice</name>
+	<description>Payment Service</description>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>

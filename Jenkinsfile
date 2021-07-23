@@ -31,7 +31,7 @@ pipeline {
         stage('Dockerize') {
             steps {
                 script {
-                    docker.build('searchservice')
+                    docker.build('paymentservice')
                 }
             }
         }
@@ -39,8 +39,8 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://241465518750.dkr.ecr.us-east-2.amazonaws.com', 'ecr:us-east-2:aws-ecr-creds') {
-                        docker.image('searchservice').push("${env.BUILD_NUMBER}")
-                        docker.image('searchservice').push('latest')
+                        docker.image('paymentservice').push("${env.BUILD_NUMBER}")
+                        docker.image('paymentservice').push('latest')
                     }
                 }
             }
@@ -48,7 +48,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying cloudformation..'
-                sh "aws cloudformation deploy --stack-name StackLunchSearchService --template-file ./ecs.yaml --parameter-overrides ApplicationName=SearchService ApplicationEnvironment=dev ECRRepositoryUri=241465518750.dkr.ecr.us-east-2.amazonaws.com/searchservice:latest --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM --region us-east-2"
+                sh "aws cloudformation deploy --stack-name StackLunchPaymentService --template-file ./ecs.yaml --parameter-overrides ApplicationName=PaymentService ApplicationEnvironment=dev ECRRepositoryUri=241465518750.dkr.ecr.us-east-2.amazonaws.com/paymentservice:latest --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM --region us-east-2"
             }
         }
     }

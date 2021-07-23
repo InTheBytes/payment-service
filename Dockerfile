@@ -1,4 +1,4 @@
 FROM openjdk:17
- ADD target/searchservice-0.0.1-SNAPSHOT.jar SearchService.jar
+ ADD target/paymentservice-0.0.1-SNAPSHOT.jar PaymentService.jar
  EXPOSE 8080
-ENTRYPOINT ["java","-jar","SearchService.jar"]
+ENTRYPOINT ["java","-jar","PaymentService.jar"]
