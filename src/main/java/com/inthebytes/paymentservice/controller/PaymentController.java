@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,9 +14,6 @@ import com.inthebytes.paymentservice.service.PaymentService;
 import com.stripe.exception.StripeException;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000",
-		"http://stacklunch.com", "http://admin.stacklunch.com", 
-		"http://driver.stacklunch.com", "http://manager.stacklunch.com"})
 @RequestMapping("/payment")
 public class PaymentController {
 
