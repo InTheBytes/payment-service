@@ -67,9 +67,6 @@ public class PaymentService {
 		transaction.setPaymentTime(Timestamp.from(Instant.now()));
 		transaction.setSubtotal(BigDecimal.valueOf((double) request.getAmount()));
 		BalanceTransaction bt = charge.getBalanceTransactionObject();
-		System.out.println(bt.toJson());
-		System.out.println(bt.getFee());
-		System.out.println(bt.getAmount());
 		transaction.setFee(BigDecimal.valueOf(bt.getFee()));
 		transaction.setTotal(BigDecimal.valueOf(bt.getAmount()));
 		transaction.setTip(BigDecimal.valueOf((double) request.getTip()));
