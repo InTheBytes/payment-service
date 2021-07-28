@@ -10,10 +10,11 @@ public class PaymentRequest {
 	
 	private String description;
 	private int amount;
+	private int tip;
     private Currency currency;
     private String stripeEmail;
     private Token token;
-    private String userId;
+    private String orderId;
 	    
 	public String getDescription() {
 		return description;
@@ -45,11 +46,16 @@ public class PaymentRequest {
 	public void setToken(Token stripeToken) {
 		this.token = stripeToken;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public String getOrderId() {
+		return orderId;
 	}
-	public String getUserId() {
-		return this.userId;
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
-
+	public int getTip() {
+		return tip;
+	}
+	public void setTip(int tip) {
+		this.tip = tip;
+	}
 }
