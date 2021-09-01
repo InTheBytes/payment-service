@@ -3,9 +3,9 @@ package com.inthebytes.paymentservice.dao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.inthebytes.paymentservice.entity.Payment;
+import com.inthebytes.paymentservice.entity.Transaction;
 
 @Repository
-public interface PaymentDao extends JpaRepository<Payment, String> {
+public interface TransactionDao extends JpaRepository<Transaction, String> {
 	
 }
