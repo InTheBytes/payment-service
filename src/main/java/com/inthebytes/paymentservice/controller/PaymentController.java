@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.inthebytes.paymentservice.entity.PaymentRequest;
+import com.inthebytes.paymentservice.dto.PaymentRequest;
 import com.inthebytes.paymentservice.service.PaymentService;
 import com.stripe.exception.StripeException;
 

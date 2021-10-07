@@ -15,11 +15,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.inthebytes.paymentservice.dao.TransactionDao;
-import com.inthebytes.paymentservice.dao.OrderDao;
-import com.inthebytes.paymentservice.entity.Transaction;
-import com.inthebytes.paymentservice.entity.Order;
-import com.inthebytes.paymentservice.entity.PaymentRequest;
+import com.inthebytes.paymentservice.dto.PaymentRequest;
+import com.inthebytes.stacklunch.data.order.Order;
+import com.inthebytes.stacklunch.data.order.OrderRepository;
+import com.inthebytes.stacklunch.data.transaction.Transaction;
+import com.inthebytes.stacklunch.data.transaction.TransactionRepository;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.BalanceTransaction;
@@ -29,10 +29,10 @@ import com.stripe.model.Charge;
 public class PaymentService {
 	
 	@Autowired
-	private TransactionDao transRepo;
+	private TransactionRepository transRepo;
 	
 	@Autowired
-	private OrderDao orderRepo;
+	private OrderRepository orderRepo;
 	
 	@Value("${STRIPE_SECRET_KEY}")
     private String API_SECRET_KEY;
@@ -71,25 +71,9 @@ public class PaymentService {
 		transaction.setTotal(BigDecimal.valueOf(bt.getAmount()));
 		transaction.setTip(BigDecimal.valueOf((double) request.getTip()));
 		
-		//TO-DO: implement these later
 		transaction.setDiscount(BigDecimal.ZERO);
 		transaction.setTax(BigDecimal.ZERO);
 		
 		return transRepo.save(transaction);
 	}
-	
-	//TODO: Discuss consolidation of transaction and payment tables; much of this information is either unnecessary or too secure, and we should be abstracting it to Stripe and Aline.
-	
-//	private void savePayment(PaymentRequest request, String method) {
-//		Transaction payment = new Transaction();
-//		User user = userRepo.getOne(request.getUserId());
-//		payment.setUser(user);
-//		payment.setMethod(method);
-//		payment.setNickname("Nickname");
-//		payment.setExpiration(Date.from(YearMonth.of(2029, 12).atDay(1).atStartOfDay(ZoneId.systemDefault()).toInstant()));
-//		payment.setAccountNum("Account Number");
-//		payment.setCode("Code");
-//		payment.setHolder("Test User");
-//		payRepo.save(payment);
-//	}
 }

@@ -1,29 +1,19 @@
 package com.inthebytes.paymentservice;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import com.inthebytes.stacklunch.StackLunchApplication;
+import com.inthebytes.stacklunch.data.order.OrderRepository;
+import com.inthebytes.stacklunch.data.transaction.TransactionRepository;
 
 @SpringBootApplication
+@EnableJpaRepositories(basePackageClasses = {
+		OrderRepository.class, TransactionRepository.class
+})
 public class PaymentServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PaymentServiceApplication.class, args);
-	}
-	
-
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**")
-					.allowedOriginPatterns("https://*.stacklunch.com", "https://stacklunch.com")
-					.allowCredentials(true)
-					.allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH");
-			}
-		};
+		StackLunchApplication.run(PaymentServiceApplication.class, args);
 	}
 }

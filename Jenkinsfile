@@ -6,14 +6,9 @@ pipeline {
         dockerTool 'Docker'
     }
     stages {
-        stage('Clean and Test target') {
+        stage('Test and Verify target') {
             steps {
-                sh 'mvn clean test'
-            }
-        }
-        stage('Test and Package') {
-            steps {
-                sh 'mvn package'
+                sh 'mvn verify'
             }
         }
         stage('Code Analysis: Sonarqube') {
@@ -26,6 +21,11 @@ pipeline {
         stage('Await Quality Gateway') {
             steps {
                 waitForQualityGate abortPipeline: true
+            }
+        }
+        stage('Test and Package') {
+            steps {
+                sh 'mvn clean package'
             }
         }
         stage('Dockerize') {
