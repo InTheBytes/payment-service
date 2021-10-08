@@ -26,6 +26,7 @@ import com.stripe.model.BalanceTransaction;
 import com.stripe.model.Charge;
 
 @Service
+@Transactional
 public class PaymentService {
 	
 	@Autowired
@@ -41,23 +42,30 @@ public class PaymentService {
     public void init() {
         Stripe.apiKey = API_SECRET_KEY;
     }
+    
 	public String stripeCharge(PaymentRequest request) throws StripeException {
+		return saveTransaction(
+				request, 
+				Charge.create(createChargeParameters(request))
+				)
+				.getStripeId();
+	}
+	
+	private Map<String, Object> createChargeParameters(PaymentRequest request) {
 		Map<String, Object> chargeParams = new HashMap<>();
 	    chargeParams.put("amount", request.getAmount());
 	    chargeParams.put("currency", request.getCurrency());
 	    chargeParams.put("source", request.getToken().getId());
-	    List<String> expandParams = new ArrayList<String>();
-	    expandParams.add("balance_transaction");
-		chargeParams.put("expand", expandParams);
-		Charge charge = Charge.create(chargeParams);
-		return saveTransaction(request, charge).getStripeId();
+	    addExpansionParameters(chargeParams);
+	    return chargeParams;
 	}
 	
-	public String alineCharge(PaymentRequest request) {
-		return "Not implemented";
+	private void addExpansionParameters(Map<String, Object> chargeParams) {
+		 List<String> expandParams = new ArrayList<String>();
+		 expandParams.add("balance_transaction");
+		 chargeParams.put("expand", expandParams);
 	}
-	
-	@Transactional
+
 	private Transaction saveTransaction(PaymentRequest request, Charge charge) {
 		Transaction transaction = new Transaction();
 		Order order = orderRepo.getOne(request.getOrderId());

@@ -1,7 +1,6 @@
 package com.inthebytes.paymentservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,9 +15,6 @@ import com.stripe.exception.StripeException;
 @RestController
 @RequestMapping("/payment")
 public class PaymentController {
-
-	@Value("${STRIPE_PUBLIC_KEY}")
-    private String stripePublicKey;
     
     @Autowired
     private PaymentService payService;
@@ -31,13 +27,6 @@ public class PaymentController {
 		} else {
 			return new ResponseEntity<String>(chargeId, HttpStatus.OK);
 		}
-	}
-    
-    @PostMapping("/aline")
-	public ResponseEntity<String> alineCharge(@RequestBody PaymentRequest request) {
-    	//Aline endpoint for future implementation
-    	String response = payService.alineCharge(request);
-		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
 
 }
